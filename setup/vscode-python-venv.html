@@ -124,10 +124,17 @@ td code { background: none; padding: 0; }
   .num { width: 36px; height: 36px; font-size: 16px; }
   h3 { font-size: 19px; line-height: 1.4; padding-top: 5px; }
 }
+.back {
+  justify-self: start; display: inline-block; padding: 8px 16px;
+  background: var(--surface); color: var(--blue); border: 2px solid var(--blue);
+  font-weight: 700; font-size: 15px; text-decoration: none;
+}
+.back:hover { background: var(--blue); color: var(--on-blue); }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <a class="back" href="../index.html">← 목록으로</a>
   <header>
     <h1>VS Code 파이썬 가상환경 설정</h1>
     <p class="lead">VS Code에서 주피터 노트북 파일을 만들고 <code>.venv</code> 가상환경으로 코드를 실행합니다.<br>파이썬과 VS Code를 먼저 설치한 뒤 진행합니다.</p>
@@ -320,6 +327,7 @@ td code { background: none; padding: 0; }
       </div>
     </details>
   </div>
+  <a class="back" href="../index.html">← 목록으로</a>
 </div>
 <script>
 (function () {
