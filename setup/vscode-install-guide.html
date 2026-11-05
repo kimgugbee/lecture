@@ -124,10 +124,17 @@ td code { background: none; padding: 0; }
   .num { width: 36px; height: 36px; font-size: 16px; }
   h3 { font-size: 19px; line-height: 1.4; padding-top: 5px; }
 }
+.back {
+  justify-self: start; display: inline-block; padding: 8px 16px;
+  background: var(--surface); color: var(--blue); border: 2px solid var(--blue);
+  font-weight: 700; font-size: 15px; text-decoration: none;
+}
+.back:hover { background: var(--blue); color: var(--on-blue); }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <a class="back" href="../index.html">← 목록으로</a>
   <header>
     <h1>VS Code 설치 가이드</h1>
     <p class="lead">공식 사이트의 설치 프로그램으로 Windows에 설치합니다.<br>순서대로 따라 하면 VS Code 첫 화면을 확인하는 단계까지 끝납니다.</p>
@@ -282,6 +289,7 @@ td code { background: none; padding: 0; }
       </div>
     </details>
   </div>
+  <a class="back" href="../index.html">← 목록으로</a>
 </div>
 </body>
 </html>
