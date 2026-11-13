@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG 실습 패키지 설치</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: 한 줄로 따라가는 설치 절차. 번호 레일을 따라 내려가고, 아래에 문제 해결을 둔다. */
+:root {
+  --bg: #f6f8fb;
+  --surface: #ffffff;
+  --fg: #16222e;
+  --muted: #566676;
+  --line: #d6dee7;
+  --blue: #2b6496;
+  --blue-soft: #e3edf6;
+  --on-blue: #ffffff;
+  --yellow: #ffd43b;
+  --warn-bg: #fff7d6;
+  --warn-fg: #4f3e00;
+  --warn-line: #e3bd2b;
+  --term-bg: #10161c;
+  --term-fg: #e6edf3;
+  --font-body: "Gothic A1", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11181f; --surface: #19222b; --fg: #e8eef4; --muted: #a0afbd; --line: #2f3c49;
+    --blue: #7ab3e4; --blue-soft: #1f3244; --on-blue: #0d1720; --yellow: #ffd43b;
+    --warn-bg: #352c0b; --warn-fg: #f8e7a6; --warn-line: #8a7114;
+    --term-bg: #0a0f13; --term-fg: #e6edf3;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11181f; --surface: #19222b; --fg: #e8eef4; --muted: #a0afbd; --line: #2f3c49;
+  --blue: #7ab3e4; --blue-soft: #1f3244; --on-blue: #0d1720; --yellow: #ffd43b;
+  --warn-bg: #352c0b; --warn-fg: #f8e7a6; --warn-line: #8a7114;
+  --term-bg: #0a0f13; --term-fg: #e6edf3;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+img { max-width: 100%; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.75;
+  word-break: keep-all; overflow-wrap: anywhere;
+}
+.wrap {
+  max-width: 800px; margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 56px 72px;
+  display: grid; gap: 40px;
+}
+header { display: grid; gap: 14px; }
+h1 { margin: 0; font-size: clamp(32px, 6vw, 46px); line-height: 1.2; font-weight: 800; letter-spacing: -0.02em; text-wrap: balance; }
+.basis { margin: 0; justify-self: start; font-weight: 700; background: var(--yellow); color: #16222e; padding: 2px 10px; }
+.lead { margin: 0; color: var(--muted); max-width: 62ch; }
+.lead strong { color: var(--fg); }
+a { color: var(--blue); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+.steps { display: grid; gap: 40px; }
+.step { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 16px; }
+.num {
+  width: 44px; height: 44px; display: grid; place-items: center;
+  background: var(--blue); color: var(--on-blue);
+  font-family: var(--font-mono); font-weight: 600; font-size: 19px; font-variant-numeric: tabular-nums;
+}
+.body { min-width: 0; display: grid; gap: 14px; }
+.body > * { min-width: 0; }
+h3 { margin: 0; font-size: 22px; line-height: 44px; font-weight: 700; letter-spacing: -0.01em; }
+.body p { margin: 0; max-width: 65ch; }
+.body ul, .body ol { margin: 0; padding-left: 1.3em; max-width: 65ch; }
+.body li + li { margin-top: 4px; }
+kbd, code {
+  font-family: var(--font-mono); font-size: .88em;
+  background: var(--blue-soft); padding: .1em .38em; border-radius: 3px;
+}
+figure { margin: 0; }
+figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line); background: #fff; }
+
+.term {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--term-bg); color: var(--term-fg);
+  font-family: var(--font-mono); font-size: 16px; padding: 10px 10px 10px 16px;
+}
+.term code { background: none; padding: 0; font-size: inherit; color: inherit; overflow-x: auto; white-space: nowrap; min-width: 0; }
+.term button {
+  flex: none; font: 500 13px var(--font-body); color: var(--term-fg);
+  background: transparent; border: 1px solid #55616d; padding: 5px 12px; cursor: pointer; border-radius: 3px;
+}
+.term button:hover { border-color: var(--term-fg); }
+
+.warn { background: var(--warn-bg); color: var(--warn-fg); border: 1px solid var(--warn-line); padding: 12px 16px; }
+.warn code { background: rgba(127, 127, 127, .18); }
+
+table { border-collapse: collapse; width: 100%; background: var(--surface); font-size: 16px; }
+.table-box { overflow-x: auto; }
+th, td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; white-space: nowrap; }
+th { font-weight: 700; color: var(--muted); font-size: 14px; }
+td code { background: none; padding: 0; }
+
+.panel { display: grid; gap: 40px; }
+.done { background: var(--blue-soft); padding: 16px 18px; font-weight: 700; }
+.done span { display: block; font-weight: 400; color: var(--muted); margin-top: 2px; }
+
+.help { display: grid; gap: 14px; }
+.help h2 { margin: 0; font-size: 22px; font-weight: 800; }
+.help details { background: var(--surface); border: 1px solid var(--line); padding: 12px 16px; }
+.help summary { cursor: pointer; font-weight: 700; }
+.help .answer { margin-top: 10px; display: grid; gap: 10px; }
+.help .answer p { margin: 0; }
+.help .answer ol { margin: 0; padding-left: 1.3em; }
+
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  .wrap { padding-block: 32px 48px; gap: 32px; }
+  .step { grid-template-columns: 36px minmax(0, 1fr); column-gap: 12px; }
+  .num { width: 36px; height: 36px; font-size: 16px; }
+  h3 { font-size: 19px; line-height: 1.4; padding-top: 5px; }
+}
+.back {
+  justify-self: start; display: inline-block; padding: 8px 16px;
+  background: var(--surface); color: var(--blue); border: 2px solid var(--blue);
+  font-weight: 700; font-size: 15px; text-decoration: none;
+}
+.back:hover { background: var(--blue); color: var(--on-blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← 목록으로</a>
+  <header>
+    <h1>RAG 실습 패키지 설치</h1>
+    <p class="basis">Python 3.12 기준</p>
+    <p class="lead">LangChain, Chroma, Streamlit 등 RAG 실습에 필요한 패키지를 한 번에 설치합니다.<br>파이썬 설치 가이드부터 터미널 설정과 패키지 설치까지 먼저 마친 뒤 진행합니다.</p>
+  </header>
+
+  <div class="steps">
+    <section class="step">
+      <div class="num">1</div>
+      <div class="body">
+        <h3>가상환경의 파이썬 버전 확인</h3>
+        <p>VS Code 터미널에서 입력 줄 앞에 <code>(.venv)</code>가 붙어 있는지 확인합니다.<br>그다음 아래 명령어를 입력합니다.</p>
+        <div class="term"><code>python --version</code><button type="button" data-copy="python --version">복사</button></div>
+        <p><code>Python 3.12.10</code>처럼 <strong>3.12</strong>로 시작하면 다음 단계로 넘어갑니다.</p>
+        <div class="warn"><strong>3.13 이상이 나오면 설치 중에 오류가 납니다.</strong><br>최신 파이썬용 설치 파일이 아직 없는 패키지가 있기 때문입니다.<br>아래 문제 해결의 <strong>Failed to build 'zstandard'</strong> 항목대로 3.12 가상환경을 다시 만듭니다.</div>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="num">2</div>
+      <div class="body">
+        <h3>pip 최신 버전으로 업데이트</h3>
+        <p>오래된 pip는 설치 파일을 제대로 찾지 못할 수 있으므로 먼저 업데이트합니다.</p>
+        <div class="term"><code>python -m pip install --upgrade pip</code><button type="button" data-copy="python -m pip install --upgrade pip">복사</button></div>
+        <p><code>Successfully installed pip</code> 또는 <code>Requirement already satisfied</code>가 나오면 됩니다.</p>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="num">3</div>
+      <div class="body">
+        <h3>RAG 패키지 설치</h3>
+        <p>아래 명령어를 한 줄 그대로 복사해 붙여 넣고 <kbd>Enter</kbd>를 누릅니다.<br>패키지가 많아 몇 분 걸릴 수 있습니다.</p>
+        <div class="term"><code>pip install langchain langchain-google-genai langchain-chroma langchain-community pypdf==6.17.0 streamlit python-dotenv ipykernel</code><button type="button" data-copy="pip install langchain langchain-google-genai langchain-chroma langchain-community pypdf==6.17.0 streamlit python-dotenv ipykernel">복사</button></div>
+        <div class="table-box">
+          <table>
+            <thead><tr><th>패키지</th><th>용도</th></tr></thead>
+            <tbody>
+              <tr><td><code>langchain</code></td><td>RAG 파이프라인 구성</td></tr>
+              <tr><td><code>langchain-google-genai</code></td><td>Gemini 모델 연결</td></tr>
+              <tr><td><code>langchain-chroma</code></td><td>Chroma 벡터 DB 연결</td></tr>
+              <tr><td><code>langchain-community</code></td><td>문서 로더 등 부가 기능</td></tr>
+              <tr><td><code>pypdf==6.17.0</code></td><td>PDF 문서 읽기 (버전 고정)</td></tr>
+              <tr><td><code>streamlit</code></td><td>웹 화면 만들기</td></tr>
+              <tr><td><code>python-dotenv</code></td><td>.env 파일의 API 키 불러오기</td></tr>
+              <tr><td><code>ipykernel</code></td><td>주피터 노트북에서 코드 실행</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>마지막 줄에 <code>Successfully installed</code>가 나오면 설치가 끝난 것입니다.</p>
+      </div>
+    </section>
+
+    <section class="step">
+      <div class="num">4</div>
+      <div class="body">
+        <h3>설치 확인</h3>
+        <p>아래 명령어를 입력합니다. 패키지를 실제로 불러와 보는 명령어입니다.</p>
+        <div class="term"><code>python -c "import langchain, langchain_chroma, langchain_google_genai, pypdf, streamlit, dotenv; print(&#39;OK&#39;)"</code><button type="button" data-copy="python -c "import langchain, langchain_chroma, langchain_google_genai, pypdf, streamlit, dotenv; print(&#39;OK&#39;)"">복사</button></div>
+        <p class="done">OK가 출력되면 완료입니다.<span>오류가 나오면 아래 문제 해결을 확인하세요.</span></p>
+      </div>
+    </section>
+  </div>
+
+  <div class="help">
+    <h2>문제 해결</h2>
+    <details>
+      <summary>ERROR: Failed to build 'zstandard' when getting requirements to build wheel</summary>
+      <div class="answer">
+        <p>가상환경의 파이썬이 3.13 이상처럼 너무 최신인 경우입니다.<br>그 버전용 설치 파일이 없어 직접 빌드하려다 실패한 것입니다. 3.12로 가상환경을 다시 만듭니다.</p>
+        <ol>
+          <li>아래 명령어로 설치된 파이썬 목록을 봅니다. 3.12가 없으면 <a href="python-install-guide.html">파이썬 설치 가이드</a>대로 3.12.10을 설치합니다.</li>
+        </ol>
+        <div class="term"><code>py --list</code><button type="button" data-copy="py --list">복사</button></div>
+        <ol start="2">
+          <li>VS Code 왼쪽 Explorer에서 <code>.venv</code> 폴더를 마우스 오른쪽 버튼으로 클릭하고 <strong>Delete</strong>로 지웁니다.</li>
+          <li>터미널을 휴지통 아이콘으로 닫고 새로 연 뒤, 아래 명령어로 3.12 가상환경을 만듭니다.</li>
+        </ol>
+        <div class="term"><code>py -3.12 -m venv .venv</code><button type="button" data-copy="py -3.12 -m venv .venv">복사</button></div>
+        <ol start="4">
+          <li>가상환경을 켜고 1단계부터 다시 진행합니다.</li>
+        </ol>
+        <div class="term"><code>.venv\Scripts\activate</code><button type="button" data-copy=".venv\Scripts\activate">복사</button></div>
+        <p>노트북을 쓰고 있었다면 오른쪽 위 커널도 새 <code>.venv (3.12.10)</code>으로 다시 선택합니다.</p>
+      </div>
+    </details>
+    <details>
+      <summary>No such file or directory 또는 경로가 너무 길다는 오류가 납니다</summary>
+      <div class="answer">
+        <p>Windows의 260자 경로 길이 제한에 걸린 경우입니다.<br>파이썬 설치 마지막 화면에서 <strong>Disable path length limit</strong>을 누르지 않았다면, 설치 파일을 다시 실행해 <strong>Modify → Next → Install</strong>로 끝까지 진행한 뒤 마지막 화면에서 누릅니다.</p>
+        <p>작업 폴더를 <code>D:\study</code>처럼 짧은 경로에 두는 것도 도움이 됩니다.</p>
+      </div>
+    </details>
+    <details>
+      <summary>입력 줄 앞에 (.venv)가 없습니다</summary>
+      <div class="answer">
+        <p>터미널을 닫고 새로 엽니다.<br>그래도 없으면 아래 명령어로 가상환경을 직접 켭니다.</p>
+        <div class="term"><code>.venv\Scripts\activate</code><button type="button" data-copy=".venv\Scripts\activate">복사</button></div>
+      </div>
+    </details>
+    <details>
+      <summary>노트북에서 import하면 ModuleNotFoundError가 납니다</summary>
+      <div class="answer">
+        <p>노트북 오른쪽 위에 <code>.venv</code>가 선택되어 있는지 확인합니다.<br>맞다면 상단의 <strong>Restart</strong>를 클릭한 뒤 다시 실행합니다.</p>
+      </div>
+    </details>
+  </div>
+  <a class="back" href="../index.html">← 목록으로</a>
+</div>
+<script>
+(function () {
+  document.querySelectorAll('[data-copy]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var done = function () {
+        button.textContent = '복사됨';
+        setTimeout(function () { button.textContent = '복사'; }, 1500);
+      };
+      var selectText = function () {
+        var range = document.createRange();
+        range.selectNodeContents(button.previousElementSibling);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        button.textContent = 'Ctrl+C';
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(button.dataset.copy).then(done, selectText);
+      } else {
+        selectText();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
